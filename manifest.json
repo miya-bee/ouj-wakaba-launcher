@@ -1,0 +1,44 @@
+{
+  "manifest_version": 3,
+  "name": "放送大学 WAKABA ランチャー",
+  "description": "WAKABAトップへすぐ戻り、登録科目へ素早く移動するためのChrome拡張です。ログアウト状態からの自動ログインにも対応します。",
+  "version": "1.0.0",
+  "minimum_chrome_version": "114",
+  "action": {
+    "default_title": "WAKABA ランチャー",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "storage",
+    "tabs",
+    "webNavigation"
+  ],
+  "host_permissions": [
+    "https://www.wakaba.ouj.ac.jp/*",
+    "https://sso.ouj.ac.jp/*",
+    "https://v.ouj.ac.jp/*"
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.wakaba.ouj.ac.jp/*",
+        "https://sso.ouj.ac.jp/*",
+        "https://v.ouj.ac.jp/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

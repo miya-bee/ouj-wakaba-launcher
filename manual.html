@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>放送大学 WAKABA ランチャー 取扱説明書</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --border: #d8e0eb;
+      --text: #1f2937;
+      --muted: #5c6776;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.7;
+    }
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 20px;
+      margin-top: 18px;
+    }
+    h1, h2 { margin: 0 0 12px; }
+    h1 { font-size: 28px; }
+    h2 { font-size: 20px; }
+    .muted { color: var(--muted); }
+    a.button {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--text);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>放送大学 WAKABA ランチャー 取扱説明書</h1>
+    <p class="muted">公開版 V1_0_0</p>
+
+    <section class="panel">
+      <h2>この拡張でできること</h2>
+      <ul>
+        <li>WAKABAトップへすぐ戻る</li>
+        <li>配信トップへすぐ移動する</li>
+        <li>登録科目をランチャーから開く</li>
+        <li>科目履歴・個別履歴から再開する</li>
+        <li>ログアウト状態から自動ログインを補助する</li>
+      </ul>
+    </section>
+
+    <section class="panel">
+      <h2>最初の設定</h2>
+      <ol>
+        <li>拡張アイコンを押して <strong>管理</strong> を開きます。</li>
+        <li>必要なら <strong>ログインID</strong> と <strong>パスワード</strong> を入力します。</li>
+        <li>必要に応じて <strong>科目履歴の表示数</strong> と <strong>個別履歴の表示数</strong> を設定します。</li>
+        <li><strong>保存</strong> を押します。</li>
+      </ol>
+      <p>保存先はこのPCの Chrome 内だけです。共有PCでは使わないでください。</p>
+    </section>
+
+    <section class="panel">
+      <h2>基本的な使い方</h2>
+      <p><strong>WAKABAトップを開く:</strong> popup の <strong>WAKABAトップ</strong> を押します。</p>
+      <p><strong>配信トップを開く:</strong> popup の <strong>配信トップ</strong> を押します。</p>
+      <p><strong>今の科目ページを登録:</strong> <strong>科目ページ</strong> を開いた状態で popup の <strong>今の科目ページを登録</strong> を押します。</p>
+      <p><strong>手動登録:</strong> 管理画面の <strong>科目登録</strong> で科目名と URL を入力して保存します。</p>
+      <p><strong>履歴から開く:</strong> popup の <strong>個別履歴</strong> または <strong>科目履歴</strong> を押します。</p>
+    </section>
+
+    <section class="panel">
+      <h2>バックアップ</h2>
+      <p><strong>エクスポート:</strong> 管理画面で <strong>エクスポート</strong> を押すと JSON で保存できます。</p>
+      <p><strong>インポート:</strong> 管理画面で <strong>インポート</strong> を押して JSON を読み込みます。</p>
+    </section>
+
+    <section class="panel">
+      <h2>注意</h2>
+      <ul>
+        <li>個別回ページは登録対象外です。</li>
+        <li>サイト構成が変わると、履歴や科目名取得の動作が変わることがあります。</li>
+        <li>共有PCではログイン情報を保存しないでください。</li>
+        <li>外部送信する処理は入れていません。</li>
+      </ul>
+      <a class="button" href="options.html">設定画面へ戻る</a>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WAKABA ランチャー</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <div>
+        <h1>WAKABA ランチャー</h1>
+        <p class="sub">トップへ戻る・履歴から再開</p>
+      </div>
+      <button id="openOptionsButton" class="ghost-button" type="button" title="科目管理">管理</button>
+    </header>
+
+    <section id="messageArea" class="message hidden" aria-live="polite"></section>
+
+    <section>
+      <h2>固定メニュー</h2>
+      <div id="systemLinks" class="system-links"></div>
+    </section>
+
+    <section>
+      <div class="section-row">
+        <h2>科目ランチャー</h2>
+        <button id="addCurrentButton" class="small-button" type="button">今の科目ページを登録</button>
+      </div>
+      <div id="subjectsContainer" class="subject-groups"></div>
+    </section>
+  </main>
+
+  <template id="subjectItemTemplate">
+    <div class="subject-item">
+      <button class="subject-open" type="button"></button>
+    </div>
+  </template>
+
+  <script src="popup.js"></script>
+</body>
+</html>

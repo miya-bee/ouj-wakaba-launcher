@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WAKABA ランチャー設定</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <main class="page">
+    <header class="page-header">
+      <div>
+        <h1>放送大学 WAKABA ランチャー設定</h1>
+        <p>固定メニュー・登録科目・自動ログイン情報を管理します。</p>
+      </div>
+      <div class="header-actions">
+        <button id="saveAllButton" type="button" class="primary">保存</button>
+        <button id="exportButton" type="button">エクスポート</button>
+        <label class="file-label">
+          インポート
+          <input id="importInput" type="file" accept="application/json">
+        </label>
+        <a id="manualButton" class="button-link" href="manual.html" target="_blank" rel="noopener">使い方</a>
+      </div>
+    </header>
+
+    <section id="statusArea" class="status hidden" aria-live="polite"></section>
+
+    <section class="panel">
+      <h2>自動ログイン情報</h2>
+      <div class="field-grid">
+        <label>
+          <span>ログインID</span>
+          <input id="credentialUsername" type="text" autocomplete="username">
+        </label>
+        <label>
+          <span>パスワード</span>
+          <input id="credentialPassword" type="password" autocomplete="current-password">
+        </label>
+      </div>
+      <div class="sub-actions">
+        <label class="checkbox-row inline-row">
+          <input id="showPassword" type="checkbox">
+          <span>パスワードを表示する</span>
+        </label>
+        <div class="header-actions">
+          <button id="clearCredentialsButton" type="button">保存情報を削除</button>
+          <button id="openWakabaNowButton" type="button">今すぐWAKABAトップを開く</button>
+        </div>
+      </div>
+      <p class="note">保存先はこのPCのChrome内（chrome.storage.local）のみです。共有PCでは使わないでください。</p>
+    </section>
+
+    <section class="panel">
+      <h2>固定メニューURL</h2>
+      <div class="field-grid">
+        <label>
+          <span>WAKABAトップURL</span>
+          <input id="wakabaHomeUrl" type="url" required>
+        </label>
+        <label>
+          <span>配信トップURL</span>
+          <input id="deliveryHomeUrl" type="url">
+        </label>
+        <label>
+          <span>お知らせURL（任意）</span>
+          <input id="newsUrl" type="url">
+        </label>
+      </div>
+      <p class="note">配信トップは既定で入力済みです。変更したい場合のみ書き換えてください。お知らせは空欄のままでも使えます。</p>
+    </section>
+
+    <section class="panel">
+      <h2>起動設定</h2>
+      <div class="field-grid compact">
+        <label>
+          <span>開き方</span>
+          <select id="openMode">
+            <option value="reuseTab">現在のタブで開く</option>
+            <option value="newTab">新しいタブで開く</option>
+          </select>
+        </label>
+        <label>
+          <span>科目履歴の表示数</span>
+          <input id="subjectRecentCount" type="number" min="1" max="20" value="3">
+        </label>
+        <label>
+          <span>個別履歴の表示数</span>
+          <input id="episodeRecentCount" type="number" min="1" max="20" value="3">
+        </label>
+        <label class="checkbox-row">
+          <input id="titleCleanup" type="checkbox">
+          <span>「今の科目ページを登録」でページタイトルを整形する</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="section-header">
+        <h2>科目登録</h2>
+        <button id="clearFormButton" type="button">フォームをクリア</button>
+      </div>
+
+      <form id="subjectForm" class="subject-form">
+        <input id="subjectId" type="hidden">
+        <div class="field-grid">
+          <label>
+            <span>科目名</span>
+            <input id="subjectName" type="text" required>
+          </label>
+          <label>
+            <span>科目URL</span>
+            <input id="subjectUrl" type="url" required>
+          </label>
+        </div>
+        <div class="form-actions">
+          <button id="saveSubjectButton" type="submit" class="primary">科目を保存</button>
+        </div>
+      </form>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>順</th>
+              <th>科目名</th>
+              <th>URL</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="subjectsTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <template id="subjectRowTemplate">
+    <tr>
+      <td class="order-cell"></td>
+      <td class="name-cell"></td>
+      <td class="url-cell"></td>
+      <td class="actions-cell">
+        <div class="table-actions">
+          <button type="button" data-action="up">↑</button>
+          <button type="button" data-action="down">↓</button>
+          <button type="button" data-action="edit">編集</button>
+          <button type="button" data-action="delete" class="danger">削除</button>
+        </div>
+      </td>
+    </tr>
+  </template>
+
+  <script src="options.js"></script>
+</body>
+</html>

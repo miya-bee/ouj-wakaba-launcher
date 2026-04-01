@@ -1,0 +1,145 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f8fafc;
+  --panel: #ffffff;
+  --border: #d7deea;
+  --text: #1f2937;
+  --muted: #5f6b7a;
+  --accent: #0050b3;
+  --danger: #c62828;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-width: 372px;
+}
+
+.app {
+  padding: 10px 10px 9px;
+}
+
+.app-header,
+.section-row,
+.subject-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.app-header {
+  margin-bottom: 8px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 16px;
+}
+
+h2 {
+  margin: 0 0 6px;
+  font-size: 13px;
+}
+
+.sub {
+  margin: 1px 0 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.system-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.system-link,
+.subject-open,
+.ghost-button,
+.small-button {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.system-link,
+.subject-open {
+  padding: 6px 9px;
+  text-align: left;
+}
+
+.system-link {
+  min-height: 40px;
+  font-weight: 600;
+}
+
+.ghost-button,
+.small-button {
+  padding: 6px 9px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.subject-open {
+  flex: 1;
+  min-width: 0;
+}
+
+.subject-groups {
+  display: grid;
+  gap: 9px;
+}
+
+.group-panel {
+  border: 1px solid var(--border);
+  background: var(--panel);
+  border-radius: 12px;
+  padding: 8px;
+}
+
+.group-title {
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.subject-list {
+  display: grid;
+  gap: 6px;
+}
+
+.message {
+  margin-bottom: 10px;
+  padding: 6px 9px;
+  border-radius: 10px;
+  background: #e8f0fe;
+  color: #123a70;
+  font-size: 11px;
+}
+
+.message.is-error {
+  background: #fdecec;
+  color: var(--danger);
+}
+
+.empty-text {
+  margin: 0;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.hidden {
+  display: none;
+}
+
+.subject-open {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
