@@ -574,6 +574,15 @@ function extractEpisodeInteractionHint(target) {
 
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message?.type === 'GET_PORTAL_LOGIN_STATE') {
+    sendResponse({
+      ok: true,
+      isPortalPage: isPortalPage(),
+      hasLoginForm: Boolean(findPortalUsernameInput() && findPortalPasswordInput())
+    });
+    return;
+  }
+
   if (message?.type !== 'GET_CURRENT_PAGE_INFO') {
     return;
   }

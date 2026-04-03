@@ -107,6 +107,14 @@ chrome.webNavigation.onCompleted.addListener(async (details) => {
     return;
   }
 
+  if (await shouldRedirectEntryFlowToTarget(details.tabId, currentUrl, pending, targetUrl)) {
+    pending.redirectedAfterLogin = true;
+    pending.lastSeenUrl = currentUrl;
+    await chrome.storage.local.set({ [STORAGE_KEYS.pendingLaunch]: pending });
+    await chrome.tabs.update(details.tabId, { url: targetUrl });
+    return;
+  }
+
   if (isCasLoginUrl(currentUrl)) {
     return;
   }
@@ -444,7 +452,7 @@ async function launchTarget(payload) {
   }
 
   const settings = await loadSettings();
-  const useEntryFlow = isPortalEntryUrl(url);
+  const useEntryFlow = isPortalEntryUrl(url) || (payload.type === 'system' && isDeliveryHomeRouteUrl(url));
 
   if (isRelatedWakabaUrl(url)) {
     await prepareAutoLoginRequest();
@@ -462,7 +470,8 @@ async function launchTarget(payload) {
     createdAt: new Date().toISOString(),
     sawCasLogin: false,
     redirectedAfterLogin: false,
-    lastSeenUrl: ''
+    lastSeenUrl: '',
+    useEntryFlow
   };
 
   await chrome.storage.local.set({ [STORAGE_KEYS.pendingLaunch]: pendingLaunch });
@@ -794,6 +803,50 @@ async function loadEpisodeHistory() {
 async function loadSettings() {
   const { settings } = await chrome.storage.local.get(STORAGE_KEYS.settings);
   return normalizeSettings(settings || {});
+}
+
+async function getPortalLoginState(tabId) {
+  if (!Number.isFinite(Number(tabId))) {
+    return null;
+  }
+
+  try {
+    const response = await chrome.tabs.sendMessage(tabId, { type: 'GET_PORTAL_LOGIN_STATE' });
+    if (!response?.ok) {
+      return null;
+    }
+
+    return {
+      isPortalPage: Boolean(response.isPortalPage),
+      hasLoginForm: Boolean(response.hasLoginForm)
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function shouldRedirectEntryFlowToTarget(tabId, currentUrl, pending, targetUrl) {
+  if (!pending?.useEntryFlow || pending.redirectedAfterLogin) {
+    return false;
+  }
+
+  if (isCasLoginUrl(currentUrl)) {
+    return false;
+  }
+
+  if (isPortalEntryUrl(currentUrl)) {
+    const portalState = await getPortalLoginState(tabId);
+    if (portalState?.isPortalPage && portalState.hasLoginForm) {
+      return false;
+    }
+    return true;
+  }
+
+  if (isWakabaUrl(currentUrl)) {
+    return true;
+  }
+
+  return false;
 }
 
 async function getCurrentTabPageInfo(tabId) {
@@ -1484,6 +1537,13 @@ function isVideoDeliveryUrl(url) {
 
 function isDeliveryDomainUrl(url) {
   return isVideoDeliveryUrl(url);
+}
+
+
+function isDeliveryHomeRouteUrl(url) {
+  const route = parseVideoDeliveryRoute(url);
+  if (!route) return false;
+  return route.path === '/login' || route.path === '/navi/home';
 }
 
 function parseVideoDeliveryRoute(url) {

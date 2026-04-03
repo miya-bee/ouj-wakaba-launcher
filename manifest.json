@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "放送大学 WAKABA ランチャー",
   "description": "WAKABAトップへすぐ戻り、登録科目へ素早く移動するためのChrome拡張です。ログアウト状態からの自動ログインにも対応します。",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "minimum_chrome_version": "114",
   "action": {
     "default_title": "WAKABA ランチャー",
