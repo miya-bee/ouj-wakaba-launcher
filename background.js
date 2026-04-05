@@ -16,10 +16,14 @@ const RELATED_URL_PATTERNS = [
   'https://v.ouj.ac.jp/*'
 ];
 
+const PUBLIC_SYLLABUS_URL = 'https://www.wakaba.ouj.ac.jp/kyoumu/syllabus/';
+const LEGACY_TOKENIZED_SYLLABUS_URL = 'https://www.wakaba.ouj.ac.jp/kyoumu/SC02060200201/display.do?taglib.html.TOKEN=db3e476f08e9990ad3719e725d20c55d';
+
 const DEFAULT_ROUTES = {
   wakabaHomeUrl: ENTRY_URL,
   deliveryHomeUrl: 'https://v.ouj.ac.jp/view/ouj/#/navi/home',
-  newsUrl: ''
+  gmailUrl: 'https://mail.google.com/a/campus.ouj.ac.jp',
+  syllabusUrl: PUBLIC_SYLLABUS_URL
 };
 
 const DEFAULT_SETTINGS = {
@@ -40,6 +44,20 @@ const TEMP_HISTORY_FOLLOW_UP_REFRESH_MS = 3000;
 
 const pendingTempHistoryTimers = new Map();
 const pendingEpisodeHistoryTimers = new Map();
+
+function normalizeRoutes(routes) {
+  const normalizedRoutes = { ...DEFAULT_ROUTES, ...(routes || {}) };
+  const syllabusUrl = String(normalizedRoutes.syllabusUrl || '').trim();
+
+  if (
+    syllabusUrl === LEGACY_TOKENIZED_SYLLABUS_URL
+    || (/https:\/\/www\.wakaba\.ouj\.ac\.jp\/kyoumu\/SC02060200201\/display\.do/i.test(syllabusUrl) && /(?:^|[?&;])taglib\.html\.TOKEN=/i.test(syllabusUrl))
+  ) {
+    normalizedRoutes.syllabusUrl = PUBLIC_SYLLABUS_URL;
+  }
+
+  return normalizedRoutes;
+}
 
 chrome.runtime.onInstalled.addListener(async ({ reason }) => {
   await clearPendingLaunch();
@@ -211,9 +229,7 @@ async function ensureDefaults() {
   const normalizedTempHistory = Array.isArray(data[STORAGE_KEYS.tempHistory]) ? data[STORAGE_KEYS.tempHistory] : [];
   const normalizedEpisodeHistory = Array.isArray(data[STORAGE_KEYS.episodeHistory]) ? data[STORAGE_KEYS.episodeHistory] : [];
 
-  patch[STORAGE_KEYS.routes] = data[STORAGE_KEYS.routes]
-    ? { ...DEFAULT_ROUTES, ...data[STORAGE_KEYS.routes] }
-    : { ...DEFAULT_ROUTES };
+  patch[STORAGE_KEYS.routes] = normalizeRoutes(data[STORAGE_KEYS.routes]);
 
   patch[STORAGE_KEYS.subjects] = normalizedSubjects;
   patch[STORAGE_KEYS.settings] = data[STORAGE_KEYS.settings]
@@ -250,7 +266,7 @@ async function getPopupData() {
     STORAGE_KEYS.episodeHistory
   ]);
 
-  const normalizedRoutes = { ...DEFAULT_ROUTES, ...(routes || {}) };
+  const normalizedRoutes = normalizeRoutes(routes);
   const normalizedSettings = { ...DEFAULT_SETTINGS, ...(settings || {}) };
   if (Object.prototype.hasOwnProperty.call(normalizedSettings, 'recentCount')) {
     const legacyCount = Math.min(20, Math.max(1, Number(normalizedSettings.recentCount || DEFAULT_SETTINGS.subjectRecentCount)));
@@ -290,29 +306,39 @@ async function getOptionsData() {
 }
 
 function buildSystemLinks(routes) {
+  const normalizedRoutes = { ...DEFAULT_ROUTES, ...(routes || {}) };
   const links = [];
 
   links.push({
     id: 'wakaba_home',
     label: 'WAKABAトップ',
-    url: normalizeLaunchUrl(routes.wakabaHomeUrl) || ENTRY_URL,
+    url: normalizeLaunchUrl(normalizedRoutes.wakabaHomeUrl) || ENTRY_URL,
     kind: 'system'
   });
 
-  if (routes.deliveryHomeUrl) {
+  if (normalizedRoutes.deliveryHomeUrl) {
     links.push({
       id: 'delivery_home',
       label: '配信トップ',
-      url: routes.deliveryHomeUrl,
+      url: normalizedRoutes.deliveryHomeUrl,
       kind: 'system'
     });
   }
 
-  if (routes.newsUrl) {
+  if (normalizedRoutes.gmailUrl) {
     links.push({
-      id: 'news',
-      label: 'お知らせ',
-      url: routes.newsUrl,
+      id: 'gmail',
+      label: 'Gmail',
+      url: normalizedRoutes.gmailUrl,
+      kind: 'system'
+    });
+  }
+
+  if (normalizedRoutes.syllabusUrl) {
+    links.push({
+      id: 'syllabus',
+      label: 'シラバス',
+      url: normalizedRoutes.syllabusUrl,
       kind: 'system'
     });
   }
@@ -452,7 +478,9 @@ async function launchTarget(payload) {
   }
 
   const settings = await loadSettings();
-  const useEntryFlow = isPortalEntryUrl(url) || (payload.type === 'system' && isDeliveryHomeRouteUrl(url));
+  // WAKABAトップと配信トップは、まず portal/ 入口を踏んでログイン状態を確立してから
+  // 目的地へ送る。配信トップは直接URLへ飛ぶより、この順序のほうが安定しやすい。
+  const useEntryFlow = isPortalEntryUrl(url) || isDeliveryHomeRouteUrl(url);
 
   if (isRelatedWakabaUrl(url)) {
     await prepareAutoLoginRequest();
@@ -644,10 +672,7 @@ async function saveCurrentTabAsSubject() {
 }
 
 async function saveOptionsData(payload) {
-  const routes = {
-    ...DEFAULT_ROUTES,
-    ...(payload.routes || {})
-  };
+  const routes = normalizeRoutes(payload.routes);
 
   if (!normalizeLaunchUrl(routes.wakabaHomeUrl)) {
     throw new Error('WAKABAトップURLは必須です。');
@@ -769,7 +794,7 @@ async function exportData() {
 
   return {
     json: JSON.stringify({
-      routes: { ...DEFAULT_ROUTES, ...(data.routes || {}) },
+      routes: normalizeRoutes(data.routes),
       settings: normalizeExportSettings(data.settings || {}),
       subjects: sortSubjects(Array.isArray(data.subjects) ? data.subjects : []),
       credentials: {

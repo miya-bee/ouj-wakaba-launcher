@@ -54,14 +54,14 @@ function renderSubjects() {
   const subjectHistoryItems = Array.isArray(popupData.subjectHistoryItems) ? popupData.subjectHistoryItems : [];
   const episodeHistoryItems = Array.isArray(popupData.episodeHistoryItems) ? popupData.episodeHistoryItems : [];
 
-  appendGroup('個別履歴', episodeHistoryItems);
-  appendGroup('科目履歴', subjectHistoryItems);
-  appendGroup('登録科目', subjects);
+  appendGroup('個別履歴', episodeHistoryItems, 'group-episode-history');
+  appendGroup('科目履歴', subjectHistoryItems, 'group-subject-history');
+  appendGroup('登録科目', subjects, 'group-registered-subjects');
 }
 
-function appendGroup(title, items) {
+function appendGroup(title, items, extraClass = '') {
   const group = document.createElement('section');
-  group.className = 'group-panel';
+  group.className = `group-panel ${extraClass}`.trim();
 
   const heading = document.createElement('h3');
   heading.className = 'group-title';

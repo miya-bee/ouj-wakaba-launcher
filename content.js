@@ -590,7 +590,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const subjectInfo = extractCurrentSubjectInfo();
   const episodeInfo = extractCurrentEpisodeInfo(subjectInfo, {
     requireActivation: true,
-    allowPreferredFallback: true,
+    allowPreferredFallback: false,
     passiveMode: true
   });
   sendResponse({

@@ -51,13 +51,26 @@
 <body>
   <main>
     <h1>放送大学 WAKABA ランチャー 取扱説明書</h1>
-    <p class="muted">公開版 V1_0_1</p>
+    <p class="muted">公開版 V1_0_2</p>
+
+    <section class="panel">
+      <h2>V1_0_1 / V1_0_2 の主な変更</h2>
+      <ul>
+        <li>固定メニューを 4 項目化し、WAKABAトップ・配信トップ・Gmail・シラバスを開けるようにしました。</li>
+        <li>ボタン名の「管理」を「設定」に変更しました。</li>
+        <li>V1_0_1 で、配信サイト側の導線変更に合わせて配信トップへのジャンプ処理を見直しました。</li>
+        <li>V1_0_2 で、配信トップへのジャンプとシラバス起動をさらに安定化しました。</li>
+        <li>popup の縦横レイアウトを見直し、4項目でも使いやすい表示に調整しました。</li>
+      </ul>
+    </section>
 
     <section class="panel">
       <h2>この拡張でできること</h2>
       <ul>
         <li>WAKABAトップへすぐ戻る</li>
         <li>配信トップへすぐ移動する</li>
+        <li>Gmail をすぐ開く</li>
+        <li>シラバスをすぐ開く</li>
         <li>登録科目をランチャーから開く</li>
         <li>科目履歴・個別履歴から再開する</li>
         <li>ログアウト状態から自動ログインを補助する</li>
@@ -67,7 +80,7 @@
     <section class="panel">
       <h2>最初の設定</h2>
       <ol>
-        <li>拡張アイコンを押して <strong>管理</strong> を開きます。</li>
+        <li>拡張アイコンを押して <strong>設定</strong> を開きます。</li>
         <li>必要なら <strong>ログインID</strong> と <strong>パスワード</strong> を入力します。</li>
         <li>必要に応じて <strong>科目履歴の表示数</strong> と <strong>個別履歴の表示数</strong> を設定します。</li>
         <li><strong>保存</strong> を押します。</li>
@@ -79,24 +92,27 @@
       <h2>基本的な使い方</h2>
       <p><strong>WAKABAトップを開く:</strong> popup の <strong>WAKABAトップ</strong> を押します。</p>
       <p><strong>配信トップを開く:</strong> popup の <strong>配信トップ</strong> を押します。</p>
+      <p><strong>Gmail を開く:</strong> popup の <strong>Gmail</strong> を押します。</p>
+      <p><strong>シラバスを開く:</strong> popup の <strong>シラバス</strong> を押します。</p>
       <p><strong>今の科目ページを登録:</strong> <strong>科目ページ</strong> を開いた状態で popup の <strong>今の科目ページを登録</strong> を押します。</p>
-      <p><strong>手動登録:</strong> 管理画面の <strong>科目登録</strong> で科目名と URL を入力して保存します。</p>
+      <p><strong>手動登録:</strong> 設定画面の <strong>科目登録</strong> で科目名と URL を入力して保存します。</p>
       <p><strong>履歴から開く:</strong> popup の <strong>個別履歴</strong> または <strong>科目履歴</strong> を押します。</p>
     </section>
 
     <section class="panel">
       <h2>バックアップ</h2>
-      <p><strong>エクスポート:</strong> 管理画面で <strong>エクスポート</strong> を押すと JSON で保存できます。</p>
-      <p><strong>インポート:</strong> 管理画面で <strong>インポート</strong> を押して JSON を読み込みます。</p>
+      <p><strong>エクスポート:</strong> 設定画面で <strong>エクスポート</strong> を押すと JSON で保存できます。</p>
+      <p><strong>インポート:</strong> 設定画面で <strong>インポート</strong> を押して JSON を読み込みます。</p>
     </section>
 
     <section class="panel">
       <h2>注意</h2>
       <ul>
         <li>個別回ページは登録対象外です。</li>
-        <li>サイト構成が変わると、履歴や科目名取得の動作が変わることがあります。</li>
+        <li>サイト構成が変わると、履歴や科目名取得、起動先判定の動作が変わることがあります。</li>
         <li>共有PCではログイン情報を保存しないでください。</li>
         <li>外部送信する処理は入れていません。</li>
+        <li>シラバスURLは公開の検索ページを使っていますが、WAKABA 側の仕様変更により動作が変わることがあります。</li>
       </ul>
       <a class="button" href="options.html">設定画面へ戻る</a>
     </section>

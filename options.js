@@ -13,7 +13,8 @@ const subjectRowTemplate = document.getElementById('subjectRowTemplate');
 const routeInputs = {
   wakabaHomeUrl: document.getElementById('wakabaHomeUrl'),
   deliveryHomeUrl: document.getElementById('deliveryHomeUrl'),
-  newsUrl: document.getElementById('newsUrl')
+  gmailUrl: document.getElementById('gmailUrl'),
+  syllabusUrl: document.getElementById('syllabusUrl')
 };
 
 const settingsInputs = {
@@ -295,7 +296,8 @@ async function saveWholeState(subjects, options = {}) {
     routes: {
       wakabaHomeUrl: routeInputs.wakabaHomeUrl.value.trim(),
       deliveryHomeUrl: routeInputs.deliveryHomeUrl.value.trim(),
-      newsUrl: routeInputs.newsUrl.value.trim()
+      gmailUrl: routeInputs.gmailUrl.value.trim(),
+      syllabusUrl: routeInputs.syllabusUrl.value.trim()
     },
     settings: {
       openMode: settingsInputs.openMode.value,
